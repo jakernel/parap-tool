@@ -23,7 +23,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    CUSTOMPARAMS.singlefile !== "" ? viteSingleFile() : null
+    CUSTOMPARAMS.singlefile ? viteSingleFile() : null
   ],
   resolve: {
     alias: {
