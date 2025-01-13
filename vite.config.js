@@ -34,6 +34,17 @@ export default defineConfig({
     // 设置输出目录
     // outDir: '/Users/parapeng/Desktop/apkEditor/app/html/dist',
     // emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        // 开启代码分割
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return id.split('node_modules/')[1].split('/')[0].toString(); // 将 node_modules 按包名拆分
+          }
+        }
+      }
+    }
+
   },
   server: {
     proxy: {
