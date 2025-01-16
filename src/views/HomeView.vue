@@ -16,7 +16,7 @@ const showNav = !CUSTOMPARAMS.singlefile
         <router-link to="/html-to-apk">HtmlToApk</router-link>|
         <router-link to="/html-to-exe">HtmlToExe</router-link>|
         <router-link to="/qr-merge">QR Merge</router-link>|
-        <a href="https://wallpaper.parap.us.kg">wallpaper</a>
+        <a href="https://parap.us.kg">wallpaper</a>
       </div>
     </template>
     <div>
