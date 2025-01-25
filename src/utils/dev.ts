@@ -7,7 +7,7 @@ export const getHostName = async (): Promise<string> => {
         console.log(port)
         return port
     }
-    return isDev ? '' : 'https://r.parap.us.kg'
+    return isDev ? '' : 'https://parap-parap.hf.space'
 }
 
 // 下载文件
