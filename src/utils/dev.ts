@@ -1,13 +1,14 @@
 // 判断是否为开发环境
 export const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 // 获取主机名
-export const getHostName = async (): Promise<string> => {
+export const getHostName = async (hfSpace: string): Promise<string> => {
     if (window.wvPort) {
         const port = await window.wvPort()
         console.log(port)
         return port
     }
-    return isDev ? '' : 'https://parap-parap.hf.space'
+    //https://parap-qdapi.hf.space/
+    return isDev ? '' : 'https://parap-' + hfSpace + '.hf.space'
 }
 
 // 下载文件

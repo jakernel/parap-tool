@@ -125,7 +125,7 @@ const generateApk = async () => {
         } else {
             throw new Error('No valid content selected')
         }
-        const hostName = await getHostName()
+        const hostName = await getHostName("parap")
         const response = await fetch(`${hostName}/tool/html2apk`, {
             method: 'POST',
             body: formData

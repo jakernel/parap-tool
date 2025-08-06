@@ -5,6 +5,7 @@ import PhoneNumber from '@/views/PhoneNumber.vue';
 import HtmlToApk from '@/views/HtmlToApk.vue'
 import QRMerge from '@/views/QRMerge.vue'
 import HtmlToExe from '@/views/HtmlToExe.vue'
+import Qd from '@/views/qd.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/html-to-exe',
     name: 'html-to-exe',
     component: HtmlToExe
+  },
+  {
+    path: '/qd',
+    name: 'qd',
+    component: Qd
   }
 ]
 if (CUSTOMPARAMS.singlefile) {

@@ -46,7 +46,9 @@ export default defineConfig({
     }
 
   },
+
   server: {
+    port: 5173, // 指定端口
     proxy: {
       '/tool': {
         target: 'http://localhost:80', // 后端API服务器地址
