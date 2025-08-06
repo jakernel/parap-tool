@@ -3,9 +3,14 @@
     <div class="qd-form">
       <textarea v-model="inputText" placeholder="请输入内容..." class="qd-input" rows="8"
         style="width: 100%; resize: vertical; font-size: 16px; padding: 12px;"></textarea>
-      <Btn :loading="loading" @click="handleSubmit" class="qd-button">
-        提交
-      </Btn>
+      <div class="qd-buttons">
+        <Btn :loading="loading" @click="handleSubmit" class="qd-button">
+          提交
+        </Btn>
+        <Btn @click="clearInput" class="qd-clear-button">
+          清除
+        </Btn>
+      </div>
     </div>
     <Alert ref="alertRef" />
   </div>
@@ -43,6 +48,12 @@ taskId=942012606129700866&banId=0&banMessage=&captchaAId=&captchaType=0&captchaU
 const loading = ref(false)
 // 添加 alert 组件引用
 const alertRef = ref()
+
+// 清除输入内容的函数
+const clearInput = () => {
+  inputText.value = ''
+}
+
 const handleSubmit = async () => {
   if (inputText.value.trim() === "") {
     alert('请输入内容')
@@ -136,15 +147,21 @@ const handleSubmit = async () => {
     },
     body: JSON.stringify(result)
   });
-
+  let data;
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    data = await response.json();
+  } else {
+    data = await response.text();
+  }
   if (!response.ok) {
-    throw new Error('请求失败，请稍后重试');
-    alertRef.value.show('APK生成失败！')
+    alertRef.value.show('提交失败！'+ data)
     loading.value = false;
   }else{
+    
     inputText.value = '';
     loading.value = false;
-    alertRef.value.show('提交成功！')
+    alertRef.value.show('提交成功！'+JSON.stringify(data))
   }
 }
 </script>
@@ -187,10 +204,33 @@ const handleSubmit = async () => {
   color: var(--c-text-light);
 }
 
+.qd-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
 .qd-button {
   min-width: 120px;
   padding: 12px 24px;
   font-size: 16px;
+}
+
+.qd-clear-button {
+  min-width: 120px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: var(--c-red);
+  color: var(--c-text-light);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.qd-clear-button:hover {
+  background-color: var(--c-red-dark);
 }
 
 @media (max-width: 767px) {
@@ -209,6 +249,12 @@ const handleSubmit = async () => {
   }
 
   .qd-button {
+    min-width: 100px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .qd-clear-button {
     min-width: 100px;
     padding: 10px 20px;
     font-size: 14px;
