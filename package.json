@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:sf": "vite build -- --singlefile=qr-merge",
+    "build:apkEditor": "vite build --outDir=/Users/parapeng/Documents/MySoft/apkEditor/app/html/dist --emptyOutDir",
     "preview": "vite preview"
   },
   "dependencies": {

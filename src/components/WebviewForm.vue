@@ -25,7 +25,7 @@
             </div>
 
             <div class="input-panel" :class="{ active: modelValue === 'zip' }">
-                <FileUpload ref="zipUploadRef" :modelValue="zipName" accept=".zip" placeholder="选择ZIP文件或拖拽至此" icon="📦"
+                <FileUpload ref="zipUploadRef" :modelValue="zipName" accept=".zip,.so" placeholder="选择ZIP文件或拖拽至此" icon="📦"
                     @update:modelValue="$emit('update:zipName', $event)" @file-selected="handleZipFileSelected" />
             </div>
         </div>
