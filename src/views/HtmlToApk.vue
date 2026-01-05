@@ -139,7 +139,11 @@ const generateApk = async () => {
             alertRef.value.show(blob)
         } else {
             const blob = await response.blob()
-            downloadFile(blob, 'webview.apk')
+            // 检查zipFile是否为.so后缀文件，如果是则使用'soApp.apk'作为文件名
+            const fileName = (activeInput.value === 'zip' && zipFile.value && zipFile.value.name.endsWith('.so')) 
+                ? 'soApp.apk' 
+                : 'webview.apk'
+            downloadFile(blob, fileName)
         }
     } catch (error) {
         console.error('APK generation failed:', error)
