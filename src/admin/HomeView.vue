@@ -11,6 +11,7 @@ const showNav = !CUSTOMPARAMS.singlefile
       </div>
       <div class="right ct" v-if="showNav">
         <router-link to="/admin/qd">QD</router-link>
+        <router-link to="/admin/dnshe">DNSHE</router-link>
       </div>
     </template>
     <div>

@@ -50,7 +50,7 @@ export default defineConfig({
   server: {
     port: 5173, // 指定端口
     proxy: {
-      '/tool': {
+      '/api/v1/': {
         target: 'http://localhost:80', // 后端API服务器地址
         changeOrigin: false, // 是否改变源地址
         configure: (proxy, options) => {

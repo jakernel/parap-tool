@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { onMounted } from 'vue';
+
+// 初始化认证状态
+onMounted(() => {
+  const authStore = useAuthStore();
+  authStore.checkAuthStatus();
+});
 </script>
 
 <template>

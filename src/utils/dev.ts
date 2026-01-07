@@ -8,7 +8,7 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
         return port
     }
     //https://parap-qdapi.hf.space/
-    return isDev ? '' : 'https://parap-' + hfSpace + '.hf.space'
+    return isDev ? '/api/v1' : 'https://parap-' + hfSpace + '.hf.space/api/v1'
 }
 
 // 下载文件
