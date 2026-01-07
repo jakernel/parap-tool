@@ -1,7 +1,11 @@
 <script setup>
-
-
+import { computed } from 'vue'
 import Theme from "@/components/Theme.vue";
+
+// 计算当前年份
+const currentYear = computed(() => {
+  return new Date().getFullYear()
+})
 </script>
 
 <template>
@@ -14,7 +18,7 @@ import Theme from "@/components/Theme.vue";
   </main>
   <footer class="footer">
     <slot name="footer">
-      para &copy; 2024
+      para &copy; {{ currentYear }}
     </slot>
   </footer>
 </template>
