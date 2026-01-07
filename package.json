@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "VITE_INCLUDE_ADMIN=1 vite",
     "build": "vite build",
+    "build:admin": "VITE_INCLUDE_ADMIN=1 vite build",
     "build:sf": "vite build -- --singlefile=qr-merge",
     "build:apkEditor": "vite build --outDir=/Users/parapeng/Documents/MySoft/apkEditor/app/html/dist --emptyOutDir",
     "preview": "vite preview"

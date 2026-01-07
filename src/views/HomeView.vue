@@ -7,7 +7,7 @@ const showNav = !CUSTOMPARAMS.singlefile
   <BaseLayout>
     <template #header>
       <div>
-        <h1>Para's Tool</h1>
+        <h1><router-link to="/admin">Para's Tool</router-link></h1>
       </div>
       <div class="right ct" v-if="showNav">
         <router-link to="/pinterest">Pinterest</router-link>|
@@ -16,7 +16,6 @@ const showNav = !CUSTOMPARAMS.singlefile
         <router-link to="/html-to-apk">HtmlToApk</router-link>|
         <router-link to="/html-to-exe">HtmlToExe</router-link>|
         <router-link to="/qr-merge">QR Merge</router-link>|
-        <router-link to="/qd">QD</router-link>|
         <a href="https://vercel-vue-demo.pages.dev/">wallpaper</a>
       </div>
     </template>

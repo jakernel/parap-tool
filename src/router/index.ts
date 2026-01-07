@@ -5,9 +5,14 @@ import PhoneNumber from '@/views/PhoneNumber.vue';
 import HtmlToApk from '@/views/HtmlToApk.vue'
 import QRMerge from '@/views/QRMerge.vue'
 import HtmlToExe from '@/views/HtmlToExe.vue'
-import Qd from '@/views/qd.vue'
+import HomeView from '@/views/HomeView.vue'
 
 const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView,
+  },
   {
     path: '/pinterest',
     name: 'pinterest',
@@ -37,14 +42,27 @@ const routes = [
     path: '/html-to-exe',
     name: 'html-to-exe',
     component: HtmlToExe
-  },
-  {
-    path: '/qd',
-    name: 'qd',
-    component: Qd
   }
 ]
+
+// 如果存在 VITE_INCLUDE_ADMIN 环境变量，则添加 admin 路由
+if (import.meta.env.VITE_INCLUDE_ADMIN) {
+  routes.push({
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/admin/HomeView.vue'),
+    children: [
+      {
+        path: 'qd',
+        name: 'admin-qd',
+        component: () => import('@/admin/qd.vue')
+      }
+    ]
+  });
+}
+
 if (CUSTOMPARAMS.singlefile) {
+  // 在 singlefile 模式下，重定向到指定的单文件路径
   routes.push({
     path: '/',
     redirect: '/' + CUSTOMPARAMS.singlefile
