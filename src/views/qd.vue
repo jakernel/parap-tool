@@ -151,7 +151,7 @@ const makeRequest = async (endpoint, successCallback) => {
   const result = parseInputText()
 
   // 发送请求
-  const hostName = await getHostName("qdapi")
+  const hostName = await getHostName("parap")
   const response = await fetch(`${hostName}${endpoint}`, {
     method: 'POST',
     headers: {
