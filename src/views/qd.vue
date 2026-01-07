@@ -4,8 +4,11 @@
       <textarea v-model="inputText" placeholder="请输入内容..." class="qd-input" rows="8"
         style="width: 100%; resize: vertical; font-size: 16px; padding: 12px;"></textarea>
       <div class="qd-buttons">
+        <Btn :loading="metaLoading" @click="handleMetaSubmit" class="qd-button">
+          校验
+        </Btn>
         <Btn :loading="loading" @click="handleSubmit" class="qd-button">
-          提交
+          签到
         </Btn>
         <Btn @click="clearInput" class="qd-clear-button">
           清除
@@ -22,30 +25,27 @@ import Btn from "@/components/Btn.vue";
 import { getHostName } from '@/utils/dev'
 import Alert from '@/components/Alert.vue'
 
-const inputText = ref(`POST /argus/api/v1/video/adv/finishWatch HTTP/1.1
+const inputText = ref(`GET /argus/api/v2/readtime/readpage HTTP/1.1
 Host: h5.if.qidian.com
-Content-Length: 146
-ibex: UcCNQhlWpTbd2eDIU_rMPqjMcZwE4zCGhLJpetg_17k6K230SyLMb6GddHWJMhfiLZOZ8X-I4DRb265RohbLsaBHIKizalyfcSAL8EbhlQOhK-RPzlNWhqJGg9FCQ1NS5MmMS8A3or-D9lYHnvhbTWx6J9rpKDK4pGKFrEuhHyaVzKiItXArxyEcXPd3eDucAWaZFOqJxxJCDbOf4ah_fUjpDkCtqePAz019HE4TNShmc_R7o5wj-XZdBNH5yK2gIkMwaaA_Fwn_Bu5_KCQeIRzaabBlfpba8wOoOa7SoDfGU3wQKWrsAlVblyxLwtyrCbqCMwKR91jkrt-1-O2vjW_PycfCpjw4Xnk6HBDfW06WDnXKVftSDMG-Ds4eNFaQF8fl58eoNSSA-4FMruF2ISGazPMIpPQeeQoaXoKAqMZA-FUgC-JjmK2CTjFsAP3iWNYj2P3kq4dhZGY4ZjExZjIxYWZiNmNmYjQ4ODViMTA2ZmVkOWM4Yg==
-User-Agent: Mozilla/5.0 (Linux; Android 14; 2106118C Build/UKQ1.231207.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.86 MQQBrowser/6.2 TBS/047823 Mobile Safari/537.36 QDJSSDK/1.0  QDNightStyle_1  QDReaderAndroid/7.9.420/1656/1002140/Xiaomi/QDShowNativeLoading
-SDKSign: fwU0VSlfsV9boLwdRxTi/iEtk49Py0XNnaqW6Sl0Fdrghw+Ea9kQt8XrIehg VIfIThxUMonbp3gBKraGUp7GnDaMgS0b+p7fbgPAL61x5gaBVouhG+00tSXy RiBi19mMdmwY+UX1/bLczy9gvtgz84Dbh6tRbhxGKYb6PS7Wew3G1z5chF+X Yyz8g4upFlrZ3m26E/+4r4U=
-tstamp: 1754502560064
-Content-Type: application/x-www-form-urlencoded
+Connection: keep-alive
 Accept: application/json, text/plain, */*
+ibex: 1tl-WCSpZQWdw7g1BJlas9B8_LAjD9idMZxB5drGru8ybCJzWLARjC3toKnWkwPFNtvsj4qJJDb1ij6WPR3hj7VvrdoZXaKZi_vXGD_EXIaIwQ0tDJ4JFA_GW8bSzf2viGQCi5se9Q89JxlxIa-x5_FA3feAjdTzhzAj8f5egLaU5buGKlANCnSrLHjiiUylNc5e67TXUWIRuI79SFc3kWpiGonBfMWfrHPSKnjdSzQHIS7OK2_5Iyp6URkzTvX0uEnQlPbYxjNl82RqH0IIWdMrYpFsjUhhDWLY5Gd_jE14FEYttJ9M0YeJdTr7TLFSwtAL95DujB_106qpBy4AEq7f74Mp6Y-US1tStIAhy_vh6jQ4-cYlDdnlYr3b4tgPv76efHuiJTG2Lo9TalO-n9SOYKhbg1mXaztgNe2-3UXrxHli9ZdW6DW7oSe6L7PCq3Z2o3-XScN5W4V0MW-vBfnsfflGgd8T6VLHVIN0rQ0xY2IxM2VhMzk3NGY2NWRiN2M1MDI5OGMwMjZjZGVlZQ==
 helios: 1
-borgus: 4280009a2669baeb55ce9af9b0d046e6
-Origin: https://h5.if.qidian.com
+User-Agent: Mozilla/5.0 (Linux; Android 14; 2106118C Build/UKQ1.231207.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.86 MQQBrowser/6.2 TBS/047823 Mobile Safari/537.36 QDJSSDK/1.0  QDNightStyle_2  QDReaderAndroid/7.9.420/1656/1002138/Xiaomi/QDShowNativeLoading
+SDKSign: fwU0VSlfsV9rZ0xVU9kOVRVDsoJ3m8Is3SyZGCJuB3Pb0ZtvCtelTkRRlDSc QphyfDpy21t8PLSB/LG1QJQZbmfLzJ55Pe7LpTJG4/LojedYAY1HGGVM0Afc m2ZdBIrbgdmwmhjyUfqpERGgn1OOyk/3HMNkZ1kbupQBJdhS6TY6SIRXaCIv zxxZF91VCplwJ3jHNU3SDVg=
+borgus: d18d9ec6600bb6959bcd7beaa1e945fe
+tstamp: 1767749769366
 X-Requested-With: com.qidian.QDReader
 Sec-Fetch-Site: same-origin
 Sec-Fetch-Mode: cors
 Sec-Fetch-Dest: empty
 Referer: https://h5.if.qidian.com/new/welfareCenter/?_viewmode=0
 Accept-Encoding: gzip, deflate, br
-Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
-Cookie: ywguid=120154865151; appId=12; areaId=30; lang=cn; mode=normal; bar=104; qid=c517bf9e55d98d04b89bfe8c10001ab17310; uuid=1736957143242645; _csrfToken=aBPgouXqNWZwLd3KVCJ6rJTPMLrN9N7iArRoFudy; newstatisticUUID=1737536871_1484997724; fu=1063664931; qidth=caa8f0c6ffb801753eddeb87100017417310; PHPSESSID=1d731535f2092fd8591e22b7c4aed501; ywkey=ykAJPC3xEdkJ; cmfuToken=N((RYkkLXQNeZlOAcbu1KeHdUuf44JfEmKXRhiwGIpf1iNZsp3ux4RQSoNxSjcv54dmDJpSgHNIoDppttCk0o4WfW02akUH4ktPAHU0AcCJhYWKp8PCe-Q3NaJz932q1eezdj5KSLS0Iwg8Y2NR2gJMNkDTBy745ylW5bxqSbRlYY-eUu1dsqZ19pbYNQOHf_fI1gyk49qreckCE81JRB6QeqcZF_Q8hyIR1fuijBnPFBbcKxAS4JqH2o99f9t14g9-hhr_X6Yik-01; QDInfo=SO+aPyWTJ02k4C9FkkB29fACDXIsJx4pAGbhVI07D8hjHPOEsCFgpKs6sLj9MLaOMad0nLWkjLZiPGzrYzIs3aToDVNBVw9rru4owdN+fTUJ1mfNNfX+Cf/Jmpzp3FOyeRsYzY8OzU29Sk1ERBjumBQCPuAjlIrqd+JbH1OKniv7JisKtatlDiu1B1WnoFPR3JOL2724igJyD3qXtZB/8xQrjiIp4AUnK9obRhk5OXwqNw+qVgD/azb+dQnBWo1sXz2px2har7FnPZzOVOMZZ2pQQaY33a8N/K6DaG79eYpBF+Rrel6e7Q==
-Connection: keep-alive
-
-taskId=942012606129700866&banId=0&banMessage=&captchaAId=&captchaType=0&captchaURL=&challenge=&gt=&newCaptcha=0&offline=0&phoneNumber=&sessionKey=`)
+Accept-Language: en-US,en;q=0.9
+Cookie: appId=12; areaId=30; lang=cn; mode=normal; bar=104; qid=c517bf9e55d98d04b89bfe8c10001ab17310; qidth=caa8f0c6ffb801753eddeb87100017417310; uuid=1758058048048519.8581786001893; PHPSESSID=8fd1c0fa63fb8b6dcffb2c72345aea4a; ywguid=120154865151; newstatisticUUID=1765047449_1132777839; _csrfToken=EDEny9WdlNdoPE09MbUbwMjNEPdWsk9stu6lcA1g; ywkey=ywxQHa9Kf6Y2; cmfuToken=N((O1X2pLUvKgzo-InNAwPH9pnOS_EWVqGrdKRoLKagIQZGFp0uyioEdCaR5eBSuMOgoGZJnuaiIG9DDLFb_W_ZKCT4CnGNVYwAACrPf82zSLov9LcnVl30N4w3jWwE6QU2aQkXAECVG0YNnEGsckMdZ4Qjr_vgMOQz2XYQI-YupsE03ZqjFio4EzAye4Hl1DIwzdO_18335fZZ3fbjBxkWMxvNTlfBZ-YCFCsYbSmOFGBFlBETaOmeli1WBvcbwGrAjlx8f7tAUOc1; QDInfo=SO+aPyWTJ02k4C9FkkB29fACDXIsJx4pAGbhVI07D8hjHPOEsCFgpKs6sLj9MLaOMad0nLWkjLYK1CmfiqshWDInjUPKO9I0m2m6h/af2OyZptx00I0vIMPBUc0X/Kvlp2KScR9ZubHiNpD6Ny5PitpF7W+D3Aeengmq2Ktk3aC2mVWLJjBOafDLA1HSz103jWXmU0u96OigRUrQOgq0C7ZEm11o3K1IiDKIIE/xyW7PaKiWsGU01dN9pxmYiPXP3GO0Tg6qv2mKxlNGymlTGlVWTQQJ8ippyH8ocgwVDFGHKu0lNTvDrA==
+`)
 const loading = ref(false)
+const metaLoading = ref(false)
 // 添加 alert 组件引用
 const alertRef = ref()
 
@@ -54,16 +54,8 @@ const clearInput = () => {
   inputText.value = ''
 }
 
-const handleSubmit = async () => {
-  if (inputText.value.trim() === "") {
-    alert('请输入内容')
-    return
-  }
-
-  loading.value = true
-
-
-  // 解析输入内容
+// 提取公共的解析函数
+const parseInputText = () => {
   const lines = inputText.value.split('\n');
   const result = {
     qdInfo: "",
@@ -73,6 +65,7 @@ const handleSubmit = async () => {
     ibex: "",
     taskType: []
   };
+
   // 通用解析头部和Cookie字段，忽略大小写，字段名参考后端结构
   // QdInfo, SdkSign, YwKey, YwGuid, Ibex
   for (let line of lines) {
@@ -136,17 +129,37 @@ const handleSubmit = async () => {
   }
 
   // 解析所有行，找出taskType
-
   result.taskType = [1, 2, 3, 4]
-  // 输出json
+  return result;
+}
+
+// 通用的API请求函数
+const makeRequest = async (endpoint, successCallback) => {
+  if (inputText.value.trim() === "") {
+    alert('请输入内容')
+    return
+  }
+
+  // 设置对应的loading状态
+  if (endpoint === '/tool/qd/checkIn') {
+    loading.value = true
+  } else if (endpoint === '/tool/qd/checkMeta') {
+    metaLoading.value = true
+  }
+
+  // 解析输入内容
+  const result = parseInputText()
+
+  // 发送请求
   const hostName = await getHostName("qdapi")
-  const response = await fetch(`${hostName}/tool/qdapi`, {
+  const response = await fetch(`${hostName}${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(result)
   });
+
   let data;
   const contentType = response.headers.get('content-type');
   if (contentType && contentType.includes('application/json')) {
@@ -154,15 +167,110 @@ const handleSubmit = async () => {
   } else {
     data = await response.text();
   }
-  if (!response.ok) {
-    alertRef.value.show('提交失败！'+ data)
-    loading.value = false;
-  }else{
-    
-    inputText.value = '';
-    loading.value = false;
-    alertRef.value.show('提交成功！'+JSON.stringify(data))
+
+  // 重置对应的loading状态
+  if (endpoint === '/tool/qd/checkIn') {
+    loading.value = false
+  } else if (endpoint === '/tool/qd/checkMeta') {
+    metaLoading.value = false
   }
+
+  if (!response.ok) {
+    alertRef.value.show('提交失败！' + data)
+  } else {
+    successCallback(data)
+  }
+}
+
+const handleSubmit = async () => {
+  await makeRequest('/tool/qd/checkIn', showCheckInResult)
+}
+
+// 新增处理 checkMeta 的函数
+const handleMetaSubmit = async () => {
+  await makeRequest('/tool/qd/checkMeta', showMetaResult)
+}
+
+// 专门用于展示checkIn结果的函数
+const showCheckInResult = (data) => {
+  let resultHtml = '<div style="text-align: left; max-height: 400px; overflow-y: auto;">';
+
+  resultHtml += '<h3 style="color: #42b983;">签到结果</h3><ul>';
+
+  if (data.appVersion) {
+    resultHtml += `<li><strong>应用版本:</strong> ${data.appVersion}</li>`;
+  }
+
+  if (data.userId) {
+    resultHtml += `<li><strong>用户ID:</strong> ${data.userId}</li>`;
+  }
+
+  if (data.deviceId) {
+    resultHtml += `<li><strong>设备ID:</strong> ${data.deviceId}</li>`;
+  }
+
+  if (data.status) {
+    resultHtml += `<li><strong>状态:</strong> ${data.status}</li>`;
+  }
+
+  if (data.active !== undefined) {
+    resultHtml += `<li><strong>是否成功:</strong> ${data.active}</li>`;
+  }
+
+  if (data.taskType && Array.isArray(data.taskType)) {
+    resultHtml += `<li><strong>任务类型:</strong> [${data.taskType.join(', ')}]</li>`;
+  }
+
+  resultHtml += '</ul>';
+  resultHtml += '</div>';
+
+  alertRef.value.showHtml(resultHtml);
+}
+
+// 专门用于展示meta结果的函数
+const showMetaResult = (data) => {
+  let resultHtml = '<div style="text-align: left; max-height: 400px; overflow-y: auto;">';
+
+  // 显示YwGuid和YwKey
+  if (data.YwGuid) {
+    resultHtml += `<p><strong>YwGuid:</strong> ${data.YwGuid}</p>`;
+  }
+
+  if (data.YwKey) {
+    resultHtml += `<p><strong>YwKey:</strong> ${data.YwKey}</p>`;
+  }
+
+  if (data.ibex) {
+    resultHtml += '<h3 style="color: #42b983;">设备信息 (ibex)</h3><ul>';
+    for (const [key, value] of Object.entries(data.ibex)) {
+      resultHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+    }
+    resultHtml += '</ul>';
+  }
+
+  if (data.qdInfos) {
+    resultHtml += '<h3 style="color: #42b983;">签到信息 (qdInfos)</h3><ul>';
+    for (const [key, value] of Object.entries(data.qdInfos)) {
+      resultHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+    }
+    resultHtml += '</ul>';
+  }
+
+  if (data.sdkSign) {
+    resultHtml += '<h3 style="color: #42b983;">SDK签名信息 (sdkSign)</h3><ul>';
+    for (const [key, value] of Object.entries(data.sdkSign)) {
+      resultHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+    }
+    resultHtml += '</ul>';
+  }
+
+  if (Object.keys(data).length === 0) {
+    resultHtml += '<p>没有返回数据</p>';
+  }
+
+  resultHtml += '</div>';
+
+  alertRef.value.showHtml(resultHtml);
 }
 </script>
 
@@ -209,6 +317,7 @@ const handleSubmit = async () => {
   gap: 10px;
   width: 100%;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .qd-button {
@@ -248,14 +357,21 @@ const handleSubmit = async () => {
     font-size: 14px;
   }
 
+  .qd-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .qd-button {
-    min-width: 100px;
+    width: 100%;
+    min-width: auto;
     padding: 10px 20px;
     font-size: 14px;
   }
 
   .qd-clear-button {
-    min-width: 100px;
+    width: 100%;
+    min-width: auto;
     padding: 10px 20px;
     font-size: 14px;
   }

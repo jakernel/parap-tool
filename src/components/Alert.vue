@@ -4,7 +4,7 @@
             <div v-if="isVisible" class="alert-overlay">
                 <div class="alert-container">
                     <div class="alert-content">
-                        <div class="alert-message">{{ message }}</div>
+                        <div class="alert-message" v-html="message"></div>
                         <button class="alert-button" @click="close">确定</button>
                     </div>
                 </div>
@@ -25,6 +25,12 @@ const show = (msg: string) => {
     isVisible.value = true
 }
 
+// 显示HTML内容的alert
+const showHtml = (html: string) => {
+    message.value = html
+    isVisible.value = true
+}
+
 // 关闭alert
 const close = () => {
     isVisible.value = false
@@ -33,6 +39,7 @@ const close = () => {
 // 暴露方法给父组件
 defineExpose({
     show,
+    showHtml,
     close
 })
 </script>
@@ -68,7 +75,18 @@ defineExpose({
 
 .alert-message {
     color: var(--c-text-1);
-    text-align: center;
+    text-align: left;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.alert-message ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.alert-message li {
+    margin: 5px 0;
 }
 
 .alert-button {
