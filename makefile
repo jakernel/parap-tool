@@ -9,4 +9,4 @@ cp:
 push-admin:
 	git subtree push --prefix=src/admin admin-module master
 pull-admin:
-	git subtree push --prefix=src/admin admin-module master
+	git subtree pull --prefix=src/admin admin-module master
