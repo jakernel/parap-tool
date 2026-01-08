@@ -45,25 +45,26 @@ const routes = [
         name: 'html-to-exe',
         component: HtmlToExe
       },
-      {
-        path: '/login',
-        name: 'login',
-        component: Login,
-        meta: { requiresAuth: false } // 标记为不需要认证的页面
-      },
-      {
-        path: '/register',
-        name: 'register',
-        component: Register,
-        meta: { requiresAuth: false } // 标记为不需要认证的页面
-      },
     ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: { requiresAuth: false } // 标记为不需要认证的页面
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
+    meta: { requiresAuth: false } // 标记为不需要认证的页面
   }
 
 ]
 
 // 如果存在 VITE_INCLUDE_ADMIN 环境变量，则添加 admin 路由
-if (import.meta.env.VITE_INCLUDE_ADMIN) {
+// if (import.meta.env.VITE_INCLUDE_ADMIN) {
+if (true) {
   routes.push({
     path: '/admin',
     name: 'admin',
@@ -80,6 +81,18 @@ if (import.meta.env.VITE_INCLUDE_ADMIN) {
         path: 'dnshe',
         name: 'admin-dnshe',
         component: () => import('@/admin/dnshe.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'send-email',
+        name: 'send-email',
+        component: () => import('@/admin/SendEmail.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'send-sms',
+        name: 'send-sms',
+        component: () => import('@/admin/SendSMS.vue'),
         meta: { requiresAuth: true }
       }
     ]
@@ -102,7 +115,7 @@ const router = createRouter({
 // 全局导航守卫
 router.beforeEach((to, from, next) => {
   // 检查路由是否需要认证
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth !== false);
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth === true);
 
   // 如果路由需要认证但用户未登录，则重定向到登录页面
   if (requiresAuth) {

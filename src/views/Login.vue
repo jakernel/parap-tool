@@ -97,7 +97,7 @@ const handleLogin = async () => {
     authStore.login(result.token, result.id, result.name);
 
     // 重定向到首页或其他页面
-    router.push('/');
+    router.push('/admin');
   } catch (err: any) {
     console.error('Login error:', err);
     error.value = err.message || 'An error occurred during login';
