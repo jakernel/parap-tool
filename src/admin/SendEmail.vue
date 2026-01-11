@@ -22,6 +22,14 @@
 
     <form @submit.prevent="sendEmail">
       <div class="form-group">
+        <label for="emailProvider">邮件服务商:</label>
+        <select id="emailProvider" v-model="selectedProvider" @change="updateFromEmail" required>
+          <option value="wangyi">网易 (para@pzx.cc.cd)</option>
+          <option value="aws">AWS SES (notify@paa.cc.cd)</option>
+          <option value="google">Google (admin@paa.cc.cd)</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label for="fromEmail">发件人:</label>
         <input type="email" id="fromEmail" v-model="emailData.from" required placeholder="Enter recipient email"
           disabled />
@@ -55,8 +63,35 @@ import Btn from "@/components/Btn.vue";
 import { useRouter } from "vue-router";
 import { getHostName, tokenfetch } from '@/utils/dev';
 
+// Define email providers with their configurations
+const emailProviders = {
+  wangyi: {
+    name: "网易",
+    email: "para@pzx.cc.cd",
+    smtpHost: "smtphz.qiye.163.com",
+    smtpPort: 465,
+    source: "Wangyi 163 Corporate Email"
+  },
+  aws: {
+    name: "AWS SES",
+    email: "notify@paa.cc.cd",
+    smtpHost: "email-smtp.us-east-2.amazonaws.com",
+    smtpPort: 587,
+    source: "Amazon Web Services SMTP"
+  },
+  google: {
+    name: "Google",
+    email: "admin@paa.cc.cd",
+    smtpHost: "smtp.gmail.com",
+    smtpPort: 465,
+    source: "Google Gmail SMTP"
+  }
+}
+
+const selectedProvider = ref('wangyi')
+
 const emailData = ref({
-  from: "no-replay@parap.us.kg",
+  from: "para@pzx.cc.cd",
   to: ['pzx521521@qq.com'],
   subject: 'Vertify Code',
   html: `
@@ -76,6 +111,13 @@ const successMessage = ref('')
 const errorMessage = ref('')
 const router = useRouter()
 
+// Update from email based on selected provider
+function updateFromEmail() {
+  if (selectedProvider.value && emailProviders[selectedProvider.value]) {
+    emailData.value.from = emailProviders[selectedProvider.value].email
+  }
+}
+
 async function sendEmail() {
   loading.value = true
   try {
@@ -86,7 +128,10 @@ async function sendEmail() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(emailData.value)
+        body: JSON.stringify({
+          ...emailData.value,
+          provider: selectedProvider.value
+        })
       },
     );
     if (response.ok) {
@@ -137,6 +182,7 @@ h2 {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
   width: 100%;
   padding: 10px;
@@ -156,6 +202,18 @@ h2 {
 textarea {
   min-height: 100px;
   resize: vertical;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: var(--c-text);
+  background: var(--c-bg-soft);
+  transition: border-color 0.3s ease;
+  cursor: pointer;
 }
 
 .success {
@@ -201,6 +259,3 @@ textarea {
   opacity: 1;
 }
 </style>
-
-<script setup>
-</script>

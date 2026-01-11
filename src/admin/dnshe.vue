@@ -2,28 +2,24 @@
   <div class="dnshe-container">
     <div class="dnshe-form">
       <h2>DNSHE 工具</h2>
-      
+
       <div class="fetch-section">
         <Btn :loading="listLoading" @click="fetchSubdomains" class="fetch-button">
           获取子域名
         </Btn>
         <p class="description">点击获取所有子域名，然后从下拉框中选择一个进行DNS查询</p>
       </div>
-      
+
       <div class="select-section" v-if="subdomains.length > 0">
         <label for="subdomain-select">选择子域名:</label>
-        <select 
-          id="subdomain-select" 
-          v-model="selectedSubdomainId" 
-          class="select-field"
-        >
+        <select id="subdomain-select" v-model="selectedSubdomainId" class="select-field">
           <option value="">请选择一个子域名</option>
           <option v-for="subdomain in subdomains" :key="subdomain.id" :value="subdomain.id">
             {{ subdomain.full_domain }} ({{ subdomain.subdomain }})
           </option>
         </select>
       </div>
-      
+
       <div class="query-section" v-if="selectedSubdomainId">
         <Btn :loading="dnsLoading" @click="queryDnsRecords" class="query-button">
           查询DNS记录
@@ -73,13 +69,10 @@
 <script setup>
 import { ref } from 'vue'
 import Btn from "@/components/Btn.vue";
-import { getHostName } from '@/utils/dev'
+import { getHostName, tokenfetch } from '@/utils/dev'
 import Alert from '@/components/Alert.vue'
 
 // 预设的API密钥
-const apiKey = 'cfsd_a67251b0ac2343b9f90b360a3305ff0b'
-const apiSecret = 'd5d37b91beafecc00c74befd371eca07262add988bb133adebb39e366d1e296d'
-
 const listLoading = ref(false)
 const dnsLoading = ref(false)
 const subdomains = ref([])
@@ -95,15 +88,11 @@ const fetchSubdomains = async () => {
   try {
     // 使用后端服务代理API请求
     const hostName = await getHostName("parap")
-    const response = await fetch(`${hostName}/tool/dnshe/subdomains`, {
-      method: 'POST',
+    const response = await tokenfetch(`${hostName}/auth/dnshe/subdomains`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        apiKey: apiKey,
-        apiSecret: apiSecret
-      })
+      }
     });
 
     if (!response.ok) {
@@ -139,16 +128,11 @@ const queryDnsRecords = async () => {
   try {
     // 使用后端服务代理API请求
     const hostName = await getHostName("parap")
-    const response = await fetch(`${hostName}/tool/dnshe/dns_records`, {
-      method: 'POST',
+    const response = await tokenfetch(`${hostName}/auth/dnshe/subdomains/${selectedSubdomainId.value}/dns_records`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        apiKey: apiKey,
-        apiSecret: apiSecret,
-        subdomainId: selectedSubdomainId.value
-      })
+      }
     });
 
     if (!response.ok) {
@@ -257,7 +241,7 @@ const queryDnsRecords = async () => {
   width: 100%;
   border-collapse: collapse;
   background-color: var(--c-bg);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
 }
