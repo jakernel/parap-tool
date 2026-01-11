@@ -94,6 +94,12 @@ if (true) {
         name: 'send-sms',
         component: () => import('@/admin/SendSMS.vue'),
         meta: { requiresAuth: true }
+      },
+      {
+        path: 'log',
+        name: 'admin-log',
+        component: () => import('@/admin/Log.vue'),
+        meta: { requiresAuth: true }
       }
     ]
   });
