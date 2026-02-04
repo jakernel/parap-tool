@@ -39,9 +39,9 @@ import { getHostName } from '../utils/dev';
 export default {
     name: 'WeChatView',
     setup() {
-        const templateId = ref('fpVNulfAC4va8k5KlSqAhgkcZ1wsHgPtxd5fuie_dvA')
+        const templateId = ref('Fz6z3v6K8dJLCngAsnLJj7R9w0OCFbSiTOwmlAUzmiU')
         const toUser = ref('ofpl32EeSHy5QHFeWFVZaXfhYcY8')
-        const dataInput = ref('{"title":"标题","app":"app","info":"内容","time":"2023-04-01 12:00:00"}')
+        const dataInput = ref('{"app":"app","info":"内容","time":"2023-04-01 12:00:00"}')
         const loading = ref(false)
         const result = ref(null)
 
