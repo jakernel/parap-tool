@@ -10,6 +10,7 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
         return port
     }
     //https://parap-qdapi.hf.space/
+    //https://parap-gzh.hf.space/
     return isDev ? '/api/v1' : 'https://parap-' + hfSpace + '.hf.space/api/v1'
 }
 
@@ -31,7 +32,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
     const authStore = useAuthStore();
     const token = authStore.token;
     const userName = authStore.userName;
-    
+
     // 设置请求头
     const headers = {
         ...(token ? { 'Authorization': `${userName} ${token}` } : {}),

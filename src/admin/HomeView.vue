@@ -29,6 +29,7 @@ const handleLogout = () => {
         <router-link to="/admin/send-email">Send Email</router-link>
         <router-link to="/admin/send-sms">Send SMS</router-link>
         <router-link to="/admin/log">Log</router-link>
+        <router-link to="/admin/wechat">WeChat</router-link>
         <button @click="handleLogout" class="logout-btn">Logout</button>
       </div>
     </template>

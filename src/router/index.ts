@@ -9,6 +9,7 @@ import HomeView from '@/views/HomeView.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 
+
 const routes = [
   {
     path: '/',
@@ -99,6 +100,12 @@ if (true) {
         path: 'log',
         name: 'admin-log',
         component: () => import('@/admin/Log.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'wechat',
+        name: 'wechat',
+        component: () => import('@/admin/wechat.vue'),
         meta: { requiresAuth: true }
       }
     ]
