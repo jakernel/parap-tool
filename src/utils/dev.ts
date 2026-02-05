@@ -9,9 +9,18 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
         console.log(port)
         return port
     }
-    //https://parap-qdapi.hf.space/
-    //https://parap-gzh.hf.space/
-    return isDev ? '/api/v1' : 'https://parap-' + hfSpace + '.hf.space/api/v1'
+    if (isDev) {
+        return '/api/v1'
+    } else {
+        if (hfSpace === 'render') {
+            return 'https://r.para.cc.cd/api/v1'
+        } else {
+            //https://parap-qdapi.hf.space/
+            //https://parap-gzh.hf.space/
+            return 'https://parap-' + hfSpace + '.hf.space/api/v1'
+        }
+
+    }
 }
 
 // 下载文件

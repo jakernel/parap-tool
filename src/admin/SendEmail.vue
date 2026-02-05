@@ -120,7 +120,7 @@ updateFromEmail();
 async function sendEmail() {
   loading.value = true
   try {
-    const hostName = await getHostName('parap');
+    const hostName = await getHostName('render');
     const response = await tokenfetch(hostName + "/auth/email/send",
       {
         method: "POST",
@@ -136,6 +136,7 @@ async function sendEmail() {
     if (response.ok) {
       const result = await response.json();
       successMessage.value = result.message
+      errorMessage.value = ''
     } else if (response.status === 401) {
       localStorage.clear()
       router.push("/login")
