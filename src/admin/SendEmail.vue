@@ -4,19 +4,11 @@
       <h2>Send Email</h2>
       <div class="tooltip-content">
         <div>
-          no-replay@parap.us.kg
-          通过zoho企业账号发送,
-          不会显示主账号的地址,
-          QQ提示:此地址未验证，请注意识别
+          lark ok
+          aws 未过验证
+          google /网易 本地 ok,服务器不行
+          google 本地测试要开代理/ DKIM,DMARC 未过验证
         </div>
-        <div>
-          notify@parap.us.kg
-          通过原账号发送的,
-          会显示主账号的地址(代发),
-          QQ无提示
-        </div>
-        <div>他们都通过了SPF,DKIM,DMARC的验证</div>
-        <div>mail-tester 测试为满分</div>
       </div>
     </div>
 
@@ -24,9 +16,9 @@
       <div class="form-group">
         <label for="emailProvider">邮件服务商:</label>
         <select id="emailProvider" v-model="selectedProvider" @change="updateFromEmail" required>
-          <option value="wangyi">网易 (para@pzx.cc.cd)</option>
-          <option value="aws">AWS SES (notify@paa.cc.cd)</option>
-          <option value="google">Google (admin@paa.cc.cd)</option>
+          <option v-for="(provider, key) in emailProviders" :key="key" :value="key">
+            {{ provider.name }} ({{ provider.email }})
+          </option>
         </select>
       </div>
       <div class="form-group">
@@ -95,7 +87,7 @@ const emailProviders = {
   }
 }
 
-const selectedProvider = ref('wangyi')
+const selectedProvider = ref('lark')
 
 const emailData = ref({
   from: "para@pzx.cc.cd",
