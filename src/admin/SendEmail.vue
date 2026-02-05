@@ -116,7 +116,7 @@ function updateFromEmail() {
     emailData.value.from = emailProviders[selectedProvider.value].email
   }
 }
-
+updateFromEmail();
 async function sendEmail() {
   loading.value = true
   try {
