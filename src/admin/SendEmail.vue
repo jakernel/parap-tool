@@ -85,6 +85,13 @@ const emailProviders = {
     smtpHost: "smtp.gmail.com",
     smtpPort: 465,
     source: "Google Gmail SMTP"
+  },
+  lark: {
+    name: "Lark",
+    email: "admin@pzx.us.ci",
+    smtpHost: "smtp.larksuite.com",
+    smtpPort: 465,
+    source: "Ali Lark SMTP"
   }
 }
 
