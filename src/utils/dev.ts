@@ -14,6 +14,8 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
     } else {
         if (hfSpace === 'render') {
             return 'https://r.para.cc.cd/api/v1'
+        } else if (hfSpace === 'vercel') {
+            return 'https://vercel.pzx.cc.cd/api/v1'
         } else {
             //https://parap-qdapi.hf.space/
             //https://parap-gzh.hf.space/

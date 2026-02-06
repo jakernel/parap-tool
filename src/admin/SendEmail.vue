@@ -78,16 +78,23 @@ const emailProviders = {
     smtpPort: 465,
     source: "Google Gmail SMTP"
   },
-  lark: {
-    name: "Lark",
+  lark_admin: {
+    name: "Lark_admin",
     email: "admin@pzx.us.ci",
+    smtpHost: "smtp.larksuite.com",
+    smtpPort: 465,
+    source: "Ali Lark SMTP"
+  },
+  lark_share: {
+    name: "Lark_share",
+    email: "noreply@pzx.us.ci",
     smtpHost: "smtp.larksuite.com",
     smtpPort: 465,
     source: "Ali Lark SMTP"
   }
 }
 
-const selectedProvider = ref('lark')
+const selectedProvider = ref('lark_admin')
 
 const emailData = ref({
   from: "para@pzx.cc.cd",
@@ -120,7 +127,7 @@ updateFromEmail();
 async function sendEmail() {
   loading.value = true
   try {
-    const hostName = await getHostName('render');
+    const hostName = await getHostName('vercel');
     const response = await tokenfetch(hostName + "/auth/email/send",
       {
         method: "POST",
