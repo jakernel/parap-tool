@@ -57,6 +57,13 @@ import { getHostName, tokenfetch } from '@/utils/dev';
 
 // Define email providers with their configurations
 const emailProviders = {
+  ali: {
+    name: " 阿里",
+    email: "admin@para.us.ci",
+    smtpHost: "smtp.qiye.aliyun.com",
+    smtpPort: 465,
+    source: "Ali Corporate Email"
+  },
   wangyi: {
     name: "网易",
     email: "para@pzx.cc.cd",
