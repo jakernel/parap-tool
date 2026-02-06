@@ -57,6 +57,20 @@ import { getHostName, tokenfetch } from '@/utils/dev';
 
 // Define email providers with their configurations
 const emailProviders = {
+  qq_notify: {
+    name: "腾讯企业邮箱",
+    email: "notify@pzx.de5.net",
+    smtpHost: "smtp.exmail.qq.com",
+    smtpPort: 465,
+    source: "Tencent Corporate Email"
+  },
+  qq_no_reply: {
+    name: "腾讯企业邮箱",
+    email: "no-reply@pzx.de5.net",
+    smtpHost: "smtp.exmail.qq.com",
+    smtpPort: 465,
+    source: "Tencent Corporate Email"
+  },
   ali: {
     name: " 阿里",
     email: "admin@para.us.ci",
