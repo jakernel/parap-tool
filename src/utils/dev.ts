@@ -53,6 +53,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
     // 发送请求
     return fetch(path, {
         ...options,
+        credentials: 'include',
         headers,
     });
 }
