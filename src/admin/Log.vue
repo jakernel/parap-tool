@@ -82,7 +82,7 @@ const fetchLogs = async () => {
 
     try {
         // 使用后端服务代理API请求
-        const hostName = await getHostName("parap")
+        const hostName = await getHostName("api")
         const response = await fetch(`${hostName}/logstore/get?key=${selectedKey.value}&start=0&count=100`, {
             method: 'GET',
             headers: {
@@ -124,7 +124,7 @@ const addLog = async () => {
 
     try {
         // 使用后端服务代理API请求
-        const hostName = await getHostName("parap");
+        const hostName = await getHostName("api");
         const response = await tokenfetch(`${hostName}/logstore/add`, {
             method: 'POST',
             headers: {

@@ -25,8 +25,9 @@
             </div>
 
             <div class="input-panel" :class="{ active: modelValue === 'zip' }">
-                <FileUpload ref="zipUploadRef" :modelValue="zipName" accept=".zip,.so" placeholder="选择ZIP文件或拖拽至此" icon="📦"
-                    @update:modelValue="$emit('update:zipName', $event)" @file-selected="handleZipFileSelected" />
+                <FileUpload ref="zipUploadRef" :modelValue="zipName" accept=".zip,.so"
+                    placeholder="选择ZIP(不要包含外层文件夹)文件或拖拽至此" icon="📦" @update:modelValue="$emit('update:zipName', $event)"
+                    @file-selected="handleZipFileSelected" />
             </div>
         </div>
 
@@ -38,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 import FileUpload from './FileUpload.vue'
 
 const props = defineProps<{

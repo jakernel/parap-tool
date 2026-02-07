@@ -87,7 +87,7 @@ const fetchSubdomains = async () => {
 
   try {
     // 使用后端服务代理API请求
-    const hostName = await getHostName("parap")
+    const hostName = await getHostName("api")
     const response = await tokenfetch(`${hostName}/auth/dnshe/subdomains`, {
       method: 'GET',
       headers: {
@@ -127,7 +127,7 @@ const queryDnsRecords = async () => {
 
   try {
     // 使用后端服务代理API请求
-    const hostName = await getHostName("parap")
+    const hostName = await getHostName("api")
     const response = await tokenfetch(`${hostName}/auth/dnshe/subdomains/${selectedSubdomainId.value}/dns_records`, {
       method: 'GET',
       headers: {

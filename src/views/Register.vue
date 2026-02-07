@@ -75,7 +75,7 @@ const handleRegister = async () => {
     }
 
     // 获取hostname
-    const hostName = await getHostName("parap");
+    const hostName = await getHostName("api");
 
     // 发送注册请求
     const response = await fetch(`${hostName}/user/createUser`, {

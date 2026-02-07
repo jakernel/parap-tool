@@ -16,6 +16,7 @@ const CUSTOMPARAMS = args.reduce((acc, arg) => {
   return acc;
 }, {});
 
+
 // https://vite.dev/config/
 export default defineConfig({
   define: {
@@ -50,17 +51,23 @@ export default defineConfig({
   server: {
     port: 5173, // 指定端口
     proxy: {
-      '/api/v1/': {
-        target: 'http://localhost:80', // 后端API服务器地址
-        changeOrigin: false, // 是否改变源地址
-        configure: (proxy, options) => {
-          proxy.on('error', (err, req, res) => {
-            // 处理代理错误，返回404
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('404 Not Found, Palse open backend!');
-          });
-        }
-      },
+      '/api/v1/': createProxyConfig(),
+      '/tool/': createProxyConfig(),
     },
   }
 })
+
+// 创建代理配置的函数
+function createProxyConfig() {
+  return {
+    target: 'http://localhost:80', // 后端API服务器地址
+    changeOrigin: false, // 是否改变源地址
+    configure: (proxy, options) => {
+      proxy.on('error', (err, req, res) => {
+        // 处理代理错误，返回404
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found, Palse open backend!');
+      });
+    }
+  };
+}

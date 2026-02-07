@@ -12,8 +12,6 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue'
-
 const props = defineProps({
   toggleValue: { type: Boolean, default: false },
 })

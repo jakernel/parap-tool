@@ -70,7 +70,7 @@ const handleSubmit = () => {
 async function getInfo() {
   try {
     loading.value = true
-    const response = await fetch(`${getHostName("parap")}/tool/pinterest`, {
+    const response = await fetch(`${getHostName("api")}/tool/pinterest`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -96,7 +96,7 @@ async function getInfo() {
 const downloadZip = async () => {
   try {
     loading.value = true
-    const response = await fetch(`${getHostName("parap")}/tool/pinterest`, {
+    const response = await fetch(`${getHostName("api")}/tool/pinterest`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
