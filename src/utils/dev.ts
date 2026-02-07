@@ -19,7 +19,7 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
         } else {
             //https://parap-qdapi.hf.space/
             //https://parap-gzh.hf.space/
-            return 'https://parap-' + hfSpace + '.hf.space/api/v1'
+            return 'https://p4zx-' + hfSpace + '.hf.space/api/v1'
         }
 
     }

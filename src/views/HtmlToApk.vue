@@ -14,26 +14,52 @@
                                 <div class="input-group">
                                     <input type="text" v-model="apkInfo.label" placeholder="请输入软件名称"
                                         class="input-field">
-                                    <span class="field-desc">对应 application.label，用于显示软件名</span>
+                                    <span class="field-desc">应用显示名称</span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>版本号 (versionCode)</label>
+                                <label>版本号 (version_code)</label>
                                 <div class="input-group">
-                                    <input type="number" v-model="apkInfo.versionCode" placeholder="请输入版本号"
+                                    <input type="number" v-model="apkInfo.version_code" placeholder="请输入版本号"
                                         class="input-field">
-                                    <span class="field-desc">对应 manifest.android:versionCode，用于更新软件</span>
+                                    <span class="field-desc">APK版本号，用于应用更新</span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>版本名称 (versionName)</label>
+                                <label>版本名称 (version_name)</label>
                                 <div class="input-group">
-                                    <input type="text" v-model="apkInfo.versionName" placeholder="请输入版本名称"
+                                    <input type="text" v-model="apkInfo.version_name" placeholder="请输入版本名称"
                                         class="input-field">
-                                    <span class="field-desc">对应 manifest.android:versionName，用于显示软件版本号</span>
+                                    <span class="field-desc">显示给用户的版本名称</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>包名 (package)</label>
+                                <div class="input-group">
+                                    <input type="text" disabled="true" v-model="apkInfo.package"
+                                        placeholder="com.example.app" class="input-field">
+                                    <span class="field-desc">应用唯一标识符</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 图标上传部分 -->
+                <div class="card">
+                    <h3>应用图标</h3>
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label>上传图标文件</label>
+                            <div class="input-group">
+                                <FileUpload ref="iconUploadRef" v-model="iconFileName" accept=".png"
+                                    placeholder="选择PNG图标文件或拖拽至此" icon="🖼️" @file-selected="handleIconSelected" />
+                                <span class="field-desc">仅支持PNG格式，尺寸要求256×256或512×512像素</span>
                             </div>
                         </div>
                     </div>
@@ -52,6 +78,7 @@
 import { ref } from 'vue'
 import WebviewForm from '@/components/WebviewForm.vue'
 import Btn from '@/components/Btn.vue'
+import FileUpload from '@/components/FileUpload.vue'
 import { getHostName, downloadFile } from '@/utils/dev'
 import Alert from '@/components/Alert.vue'
 
@@ -65,9 +92,18 @@ const isGenerating = ref(false)
 
 const apkInfo = ref({
     label: 'WebViewDemo',
-    versionCode: 1,
-    versionName: '1.0.0'
+    version_code: 1,
+    version_name: '1.0.0',
+    package: 'com.example.webviewdemo'
 })
+
+// 图标文件相关
+const iconFile = ref<File | null>(null)
+const iconFileName = ref('')
+const soFile = ref<File | null>(null)
+
+// 图标文件引用
+const iconUploadRef = ref()
 
 // 添加 alert 组件引用
 const alertRef = ref()
@@ -81,6 +117,85 @@ const switchInput = (type: 'url' | 'html' | 'zip') => {
 const handleZipSelected = (file: File) => {
     zipFile.value = file
     zipFileName.value = file.name
+
+    // 如果是.so文件，也保存到soFile
+    if (file.name.endsWith('.so')) {
+        soFile.value = file
+    }
+}
+
+// 处理图标文件选择
+const handleIconSelected = async (file: File) => {
+    // 验证文件类型（仅支持PNG）
+    if (file.type !== 'image/png') {
+        alertRef.value.show('请上传 PNG 格式的图片文件')
+        // 清空选择
+        if (iconUploadRef.value) {
+            iconUploadRef.value.selectedFile = null
+        }
+        iconFileName.value = ''
+        return
+    }
+
+    // 验证文件大小 (限制为 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alertRef.value.show('图标文件大小不能超过 2MB')
+        // 清空选择
+        if (iconUploadRef.value) {
+            iconUploadRef.value.selectedFile = null
+        }
+        iconFileName.value = ''
+        return
+    }
+
+    // 验证图片尺寸（256x256 或 512x512）
+    try {
+        const img = new Image()
+        img.onload = () => {
+            const validSizes = [
+                { width: 256, height: 256 },
+                { width: 512, height: 512 }
+            ]
+
+            const isValidSize = validSizes.some(size =>
+                img.width === size.width && img.height === size.height
+            )
+
+            if (!isValidSize) {
+                alertRef.value.show('图标尺寸必须为 256×256 或 512×512 像素')
+                // 清空选择
+                if (iconUploadRef.value) {
+                    iconUploadRef.value.selectedFile = null
+                }
+                iconFileName.value = ''
+                return
+            }
+
+            // 尺寸验证通过，保存文件
+            iconFile.value = file
+        }
+
+        img.onerror = () => {
+            alertRef.value.show('无法读取图片文件')
+            if (iconUploadRef.value) {
+                iconUploadRef.value.selectedFile = null
+            }
+            iconFileName.value = ''
+        }
+
+        // 读取图片
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            img.src = e.target?.result as string
+        }
+        reader.readAsDataURL(file)
+    } catch (error) {
+        alertRef.value.show('图片验证失败')
+        if (iconUploadRef.value) {
+            iconUploadRef.value.selectedFile = null
+        }
+        iconFileName.value = ''
+    }
 }
 
 // 格式化URL
@@ -102,52 +217,78 @@ const generateApk = async () => {
 
     isGenerating.value = true
     try {
-        const formData = new FormData()
-
-        // 添加 manifest 信息
-        formData.append('manifest', JSON.stringify({
-            version_code: apkInfo.value.versionCode,
-            version_name: apkInfo.value.versionName,
+        // 构建请求数据
+        const requestData: any = {
+            version_code: apkInfo.value.version_code,
+            version_name: apkInfo.value.version_name,
             label: apkInfo.value.label,
-            package: ''
-        }))
+            package: apkInfo.value.package
+        }
 
-        // 只添加当前激活标签的内容
+        // 添加内容数据
         if (activeInput.value === 'url' && webviewUrl.value) {
-            formData.append('url', formatUrl(webviewUrl.value))
+            requestData.url = formatUrl(webviewUrl.value)
         } else if (activeInput.value === 'html' && htmlContent.value) {
-            const htmlFile = new File([htmlContent.value], 'index.html', {
-                type: 'text/html'
-            })
-            formData.append('html_file', htmlFile)
+            // 将HTML内容转换为base64字符串
+            const htmlEncoder = new TextEncoder()
+            const htmlBytes = htmlEncoder.encode(htmlContent.value)
+            requestData.html_file = btoa(String.fromCharCode(...htmlBytes))
         } else if (activeInput.value === 'zip' && zipFile.value) {
-            formData.append('zip_file', zipFile.value)
+            // 将ZIP文件转换为base64字符串
+            const zipArrayBuffer = await zipFile.value.arrayBuffer()
+            const zipBytes = new Uint8Array(zipArrayBuffer)
+            requestData.zip_file = btoa(String.fromCharCode(...zipBytes))
         } else {
             throw new Error('No valid content selected')
         }
+
+        // 添加SO文件（如果存在）
+        if (soFile.value) {
+            const soArrayBuffer = await soFile.value.arrayBuffer()
+            const soBytes = new Uint8Array(soArrayBuffer)
+            requestData.so_file = btoa(String.fromCharCode(...soBytes))
+        }
+
+        // 添加图标文件（如果存在）
+        if (iconFile.value) {
+            const iconArrayBuffer = await iconFile.value.arrayBuffer()
+            const iconBytes = new Uint8Array(iconArrayBuffer)
+            requestData.icon_file = btoa(String.fromCharCode(...iconBytes))
+        }
+
         const hostName = await getHostName("parap")
-        const response = await fetch(`${hostName}/tool/html2apk`, {
+        const response = await fetch(`${hostName}/html2apk`, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
         })
 
         if (!response.ok) {
-            throw new Error('APK generation failed')
+            const errorData = await response.json().catch(() => ({}))
+            throw new Error(errorData.error_message || 'APK生成失败')
         }
+
+        const result = await response.json()
+
+        if (!result.success) {
+            throw new Error(result.error_message || 'APK生成失败')
+        }
+
+        // 处理返回的APK文件
+        // @ts-ignore
         if (window.wvPort) {
-            const blob = await response.text()
-            alertRef.value.show(blob)
+            alertRef.value.show('APK生成成功！')
         } else {
-            const blob = await response.blob()
-            // 检查zipFile是否为.so后缀文件，如果是则使用'soApp.apk'作为文件名
-            const fileName = (activeInput.value === 'zip' && zipFile.value && zipFile.value.name.endsWith('.so')) 
-                ? 'soApp.apk' 
-                : 'webview.apk'
-            downloadFile(blob, fileName)
+            // 将byte数组转换为blob
+            const apkBlob = byteArrayToBlob(result.apk_content, 'application/vnd.android.package-archive')
+            const fileName = result.filename || 'webview.apk'
+            downloadFile(apkBlob, fileName)
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error('APK generation failed:', error)
-        alertRef.value.show('APK生成失败！')
+        alertRef.value.show(error.message || 'APK生成失败！')
     } finally {
         isGenerating.value = false
     }
@@ -157,6 +298,23 @@ const generateApk = async () => {
 const validateInputs = () => {
     if (!apkInfo.value.label) {
         alertRef.value.show('请输入软件名称')
+        return false
+    }
+
+    if (!apkInfo.value.version_name) {
+        alertRef.value.show('请输入版本名称')
+        return false
+    }
+
+    if (!apkInfo.value.package) {
+        alertRef.value.show('请输入包名')
+        return false
+    }
+
+    // 验证包名格式
+    const packageRegex = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*$/
+    if (!packageRegex.test(apkInfo.value.package)) {
+        alertRef.value.show('包名格式不正确，请使用类似 com.example.app 的格式')
         return false
     }
 
@@ -179,6 +337,11 @@ const validateInputs = () => {
     }
 
     return true
+}
+
+// byte数组转blob工具函数
+const byteArrayToBlob = (byteArray: Uint8Array, contentType: string = ''): Blob => {
+    return new Blob([byteArray], { type: contentType })
 }
 
 const updateConfig = (newConfig: Partial<typeof apkInfo.value>) => {
@@ -231,6 +394,8 @@ const updateConfig = (newConfig: Partial<typeof apkInfo.value>) => {
     color: var(--c-text-2);
     margin-top: 4px;
 }
+
+
 
 @media (max-width: 768px) {
     .form-row {
