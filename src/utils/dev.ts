@@ -46,7 +46,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
 
     // 设置请求头
     const headers = {
-        ...(token ? { 'Authorization': `${userName} ${token}` } : {}),
+        ...(token ? { 'Authorization': `${userName} ${token}` ,'x-api-key': `${userName} ${token}` } : {}),
         ...options.headers,
     };
 
