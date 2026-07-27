@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/auth';
 // 判断是否为开发环境
 export const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 // 获取主机名
-export const getHostName = async (hfSpace: string): Promise<string> => {
+export const getHostName = async (spaceName: string): Promise<string> => {
     if (window.wvPort) {
         const port = await window.wvPort()
         console.log(port)
@@ -12,14 +12,16 @@ export const getHostName = async (hfSpace: string): Promise<string> => {
     if (isDev) {
         return '/api/v1'
     } else {
-        if (hfSpace === 'render') {
+        if (spaceName === 'render') {
             return 'https://r.para.cc.cd/api/v1'
-        } else if (hfSpace === 'vercel') {
+        } else if (spaceName === 'vercel') {
             return 'https://vercel.pzx.cc.cd/api/v1'
+        } else if (spaceName === 'ms') {
+            return 'https://parall-para-api.ms.fun/api/v1'
+        } else if (spaceName === 'hf') {
+            return 'https://p4zx-api.hf.space/api/v1'
         } else {
-            //https://parap-qdapi.hf.space/
-            //https://parap-gzh.hf.space/
-            return 'https://p4zx-' + hfSpace + '.hf.space/api/v1'
+            return 'https://parall-para-api.ms.fun/api/v1'
         }
 
     }
@@ -46,7 +48,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
 
     // 设置请求头
     const headers = {
-        ...(token ? { 'Authorization': `${userName} ${token}` ,'x-api-key': `${userName} ${token}` } : {}),
+        ...(token ? { 'Authorization': `${userName} ${token}`, 'x-api-key': `${userName} ${token}` } : {}),
         ...options.headers,
     };
 
