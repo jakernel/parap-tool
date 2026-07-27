@@ -54,7 +54,7 @@ const router = useRouter()
 async function sendEmail() {
   loading.value = true
   try {
-    const hostName = await getHostName('api');
+    const hostName = await getHostName();
     const response = await tokenfetch(hostName + "/auth/sms/send",
       {
         method: "POST",

@@ -148,7 +148,7 @@ updateFromEmail();
 async function sendEmail() {
   loading.value = true
   try {
-    const hostName = await getHostName('vercel');
+    const hostName = await getHostName();
     const response = await tokenfetch(hostName + "/auth/email/send",
       {
         method: "POST",
