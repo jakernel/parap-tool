@@ -146,6 +146,7 @@ function updateFromEmail() {
 }
 updateFromEmail();
 async function sendEmail() {
+  successMessage.value = 'email sending...'
   loading.value = true
   try {
     const hostName = await getHostName();
