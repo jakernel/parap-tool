@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/auth';
 
+const msApi ='https://parall-para-api.ms.fun/api/v1'
 // 判断是否为开发环境
 export const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 // 获取主机名
@@ -13,15 +14,17 @@ export const getHostName = async (spaceName: string): Promise<string> => {
         return '/api/v1'
     } else {
         if (spaceName === 'render') {
-            return 'https://r.para.cc.cd/api/v1'
+            return 'https://api.pzx.kdns.fr/api/v1'
         } else if (spaceName === 'vercel') {
             return 'https://vercel.pzx.cc.cd/api/v1'
         } else if (spaceName === 'ms') {
-            return 'https://parall-para-api.ms.fun/api/v1'
+            return msApi
         } else if (spaceName === 'hf') {
             return 'https://p4zx-api.hf.space/api/v1'
-        } else {
-            return 'https://parall-para-api.ms.fun/api/v1'
+        } else if (spaceName === 'railway') {
+            return 'https://kratosrender-production.up.railway.app/api/v1'
+        }else {
+            return msApi
         }
 
     }
@@ -46,9 +49,18 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
     const token = authStore.token;
     const userName = authStore.userName;
 
+    const isMsApi = path.startsWith(msApi)
+
+    // ModelScope API 不支持通过请求头传递 token，改为放入 URL 查询参数。
+    if (isMsApi && token) {
+        const url = new URL(path)
+        url.searchParams.set('token', token)
+        path = url.toString()
+    }
+
     // 设置请求头
     const headers = {
-        ...(token ? { 'Authorization': `${userName} ${token}`, 'x-api-key': `${userName} ${token}` } : {}),
+        ...(!isMsApi && token ? { 'Authorization': `${userName} ${token}`} : {}),
         ...options.headers,
     };
 
