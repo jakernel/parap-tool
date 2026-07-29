@@ -55,6 +55,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
     if (isMsApi && token) {
         const url = new URL(path)
         url.searchParams.set('token', token)
+        url.searchParams.set('userName', userName)
         path = url.toString()
     }
 
