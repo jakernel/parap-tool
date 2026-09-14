@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/auth';
 
-const msApi ='https://parall-para-api.ms.fun/api/v1'
+const msApi = 'https://parall-para-api.ms.fun/api/v1'
 // 判断是否为开发环境
 export const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 // 获取主机名
@@ -14,7 +14,7 @@ export const getHostName = async (spaceName: string): Promise<string> => {
         return '/api/v1'
     } else {
         if (spaceName === 'render') {
-            return 'https://api.pzx.kdns.fr/api/v1'
+            return 'https://api.parap.dpdns.org/api/v1'
         } else if (spaceName === 'vercel') {
             return 'https://vercel.pzx.cc.cd/api/v1'
         } else if (spaceName === 'ms') {
@@ -23,7 +23,7 @@ export const getHostName = async (spaceName: string): Promise<string> => {
             return 'https://p4zx-api.hf.space/api/v1'
         } else if (spaceName === 'railway') {
             return 'https://kratosrender-production.up.railway.app/api/v1'
-        }else {
+        } else {
             return msApi
         }
 
@@ -61,7 +61,7 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
 
     // 设置请求头
     const headers = {
-        ...(!isMsApi && token ? { 'Authorization': `${userName} ${token}`} : {}),
+        ...(!isMsApi && token ? { 'Authorization': `${userName} ${token}` } : {}),
         ...options.headers,
     };
 
