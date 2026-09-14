@@ -62,7 +62,6 @@ export const tokenfetch = async (path: string, options: RequestInit = {}) => {
     // 设置请求头
     const headers = {
         ...(!isMsApi && token ? { 'Authorization': `${userName} ${token}`} : {}),
-        ...(isMsApi ? { 'ua': 'parap-tool' } : {}),
         ...options.headers,
     };
 
